@@ -10,7 +10,7 @@ onMounted(() => {
 
 const getPosts = async () => {
   try {
-    const response = await api.get('http://localhost:3000/posts');
+    const response = await api.get('/posts');
     console.log(response);
   }
   catch(error){
