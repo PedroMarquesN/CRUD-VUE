@@ -28,7 +28,7 @@
         <q-item-label
           header
         >
-          Essential Links
+          Menus
         </q-item-label>
 
         <q-item
