@@ -21,17 +21,19 @@ interface Props {
   todos?: Todo[];
   meta: Meta;
   active: boolean;
-};
-
-const props = withDefaults(defineProps<Props>(), {
-  todos: () => []
-});
-
-const clickCount = ref(0);
-function increment() {
-  clickCount.value += 1;
-  return clickCount.value;
 }
 
-const todoCount = computed(() => props.todos.length);
+// Definindo as props diretamente
+const props = defineProps<Props>();
+
+// Definindo os valores padrão manualmente
+const todos = props.todos ?? [];
+const clickCount = ref(0);
+
+function increment() {
+  clickCount.value += 1;
+}
+
+const todoCount = computed(() => todos.length);
+
 </script>
