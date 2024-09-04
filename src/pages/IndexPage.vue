@@ -4,9 +4,11 @@ import coursesService from '../services/course';
 import { onMounted, ref } from 'vue';
 import { ICourse } from '../types/API';
 import { confirmDeleteDialog} from '../services/dialogService';
+import { useRouter } from 'vue-router';
 
 const courses = ref<ICourse[]>([]);
 const {list , remove} = coursesService();
+const router = useRouter();
 
 onMounted(() => {
   getPosts();
@@ -24,7 +26,7 @@ const getPosts = async () => {
 }
 
 const editCourse = (course: ICourse) => {
-  console.log(course);
+  router.push({ name: 'FormCourse', params: { id: course.id } });
 }
 
 const deleteCourse = async (course: ICourse) => {
@@ -85,7 +87,6 @@ defineOptions({
         />
         <q-btn
           dense
-
           icon="delete"
           color="negative"
           size="sm"

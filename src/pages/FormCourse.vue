@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import {  ref } from 'vue';
+import {  onMounted, ref } from 'vue';
 import { ICourse } from '../types/API';
 import coursesService from '../services/course';
 import { showSuccessDialog } from '../services/dialogService';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+
 
 const router = useRouter(); 
+const route = useRoute();
 
+const { save,getById,update } = coursesService();
 const course = ref<ICourse>({
   id: 0, 
   title: '',
@@ -15,17 +18,33 @@ const course = ref<ICourse>({
 });
 
 
+onMounted(async () => {
+  if (route.params.id) {
+    const courseId = Array.isArray(route.params.id) ? parseInt(route.params.id[0], 10) : parseInt(route.params.id, 10);
+    if (!isNaN(courseId)) {
+      try {
+        course.value = await getById(courseId);
+        console.log(course.value);
+      } catch (error) {
+        console.error('Erro ao obter o curso:', error);
+      }
+    }
+  }
+});
 
 const submitForm = async () => {
 
-  try {
-    await coursesService().save(course.value);
-    showSuccessDialog('Curso cadastrado com sucesso');
+    try {
+    if (course.value.id) {
+      await update(course.value.id, course.value);
+      showSuccessDialog('Curso atualizado com sucesso');
+    } else {
+      await save(course.value);
+      showSuccessDialog('Curso cadastrado com sucesso');
+    }
     router.push({ name: 'home' });
-
-  }
-  catch(error){
-    console.error(error);
+  } catch (error) {
+    console.error('Erro ao salvar o curso:', error);
   }
 }
 defineOptions({
