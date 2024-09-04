@@ -4,6 +4,7 @@ import { IApiService, ICourse } from '../types/API';
 
 
 export default function useApi(url: string): IApiService<ICourse> {
+    
     const list = async (): Promise<ICourse[]> => {
         try {
             const { data } = await api.get<ICourse[]>(url);
@@ -16,6 +17,19 @@ export default function useApi(url: string): IApiService<ICourse> {
             }
         }
     };
+
+    const getById = async (id: number): Promise<ICourse> => {
+        try {
+          const { data } = await api.get<ICourse>(`${url}/${id}`);
+          return data;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            throw new Error(error.message);
+          } else {
+            throw new Error('Um erro desconhecido ocorreu');
+          }
+        }
+      };
 
     const post = async (item: ICourse): Promise<ICourse> => {
         try {
@@ -55,5 +69,5 @@ export default function useApi(url: string): IApiService<ICourse> {
         }
     };
 
-    return { list, post, remove, update };
+    return { list, post, remove, update, getById };
 }

@@ -10,6 +10,7 @@ export interface IApiService<T> {
     post: (item: T) => Promise<T>;
     remove: (id: number) => Promise<void>;
     update: (id: number, item: T) => Promise<T>;
+    getById: (id: number) => Promise<T>;
 }
 
 
@@ -18,4 +19,5 @@ export interface IPostService {
     post: (item: ICourse) => Promise<ICourse>;
     remove: (id: number) => Promise<void>;
     update: (id: number, item: ICourse) => Promise<ICourse>;
+    getById: (id: number) => Promise<ICourse>;
 }
