@@ -3,6 +3,8 @@ import { api } from '../boot/axios';
 import { Row } from '../types/table';
 import { onMounted, ref } from 'vue';
 
+const posts = ref([]);
+
 onMounted(() => {
   getPosts();
 });
@@ -10,8 +12,8 @@ onMounted(() => {
 
 const getPosts = async () => {
   try {
-    const response = await api.get('/posts');
-    console.log(response);
+    const{data} = await api.get('/posts');
+   posts.value = data;
   }
   catch(error){
     console.error(error);
