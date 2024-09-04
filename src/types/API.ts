@@ -1,8 +1,8 @@
 export interface ICourse {
     id: number;
-    name: string;
-    description: string;
-    price: number;
+    title: string;
+    author: string;
+    views: number;
 }
 
 export interface IApiService<T> {

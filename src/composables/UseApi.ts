@@ -1,5 +1,5 @@
-import { api } from "@/boot/axios";
-import { IApiService, ICourse } from "@/types/API";
+import { api } from '../boot/axios';
+import { IApiService, ICourse } from '../types/API';
 
 
 

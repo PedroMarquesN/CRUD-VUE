@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { api } from '../boot/axios';
-import { Row } from '../types/table';
-import { onMounted, ref } from 'vue';
 
-const posts = ref([]);
+import coursesService from '../services/course';
+import { onMounted, ref } from 'vue';
+import { ICourse } from '../types/API';
+import { showDeleteDialog } from '../services/dialogService';
+
+const courses = ref<ICourse[]>([]);
+const {list , remove} = coursesService();
 
 onMounted(() => {
   getPosts();
@@ -12,8 +15,24 @@ onMounted(() => {
 
 const getPosts = async () => {
   try {
-    const{data} = await api.get('/posts');
-   posts.value = data;
+    const data  = await list();
+    courses.value = data;
+    console.log(data);
+  }
+  catch(error){
+    console.error(error);
+  }
+}
+
+const editCourse = (course: ICourse) => {
+  console.log(course);
+}
+
+const deleteCourse = async (course: ICourse) => {
+  try {
+    await remove(course.id);
+    courses.value = courses.value.filter((c) => c.id !== course.id);
+    showDeleteDialog('Curso Deletado com sucesso !');
   }
   catch(error){
     console.error(error);
@@ -22,28 +41,14 @@ const getPosts = async () => {
 
 
 const columns = [
-  {
-    name: 'id',
-    required: true,
-    label: 'ID',
-    align: 'left' as const,
-    field: 'id',
-    sortable: true
-  },
-  { name: 'title', align: 'center' as const, label: 'Title', field: 'title', sortable: true },
-  { name: 'autor', align: 'center' as const, label: 'Autor', field: 'autor', sortable: true },
-  { name: 'views', align: 'center' as const, label: 'Views', field: 'views', sortable: true },
-];
+      { name: 'id', required: true, label: 'ID', align: 'left' as const, field: (row: ICourse) => row.id, format: (val: number) => `${val}`, sortable: true },
+      { name: 'title', required: true, label: 'Title', align: 'left' as const, field: (row: ICourse) => row.title, sortable: true },
+      { name: 'author', required: true, label: 'Author', align: 'left' as const, field: (row: ICourse) => row.author, sortable: true },
+      { name: 'views', required: true, label: 'Views', align: 'left' as const, field: (row: ICourse) => row.views, sortable: true },
+      { name: 'actions', field: 'actions',label: 'Actions', align: 'right' as const }
+    ];
 
-const rows = ref<Row[]>([
-  {
-    id: 1,
-    category: 'Cursos',
-    title: 'Curso de Vue.js',
-    autor: 'Leonardo Leitão',
-    views: 1000
-  },
-]);
+
 
 defineOptions({
   name: 'IndexPage'
@@ -55,10 +60,32 @@ defineOptions({
     <q-table
       flat
       bordered
-      :rows="rows"
+      :rows="courses"
       :columns="columns"
       row-key="id"
-    />
+    >
+    <template v-slot:body-cell-actions="props">
+      <q-td :props="props">
+        <q-btn
+          dense
+          icon="edit"
+          color="primary"
+          size="sm"
+          class="q-mr-sm"
+          @click="editCourse(props.row)"
+        />
+        <q-btn
+          dense
+
+          icon="delete"
+          color="negative"
+          size="sm"
+          @click="deleteCourse(props.row)"
+        />
+      </q-td>
+    </template>
+  
+  </q-table>
   </q-page>
 </template>
 

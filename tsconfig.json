@@ -15,15 +15,24 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["vite/client"]
+    "types": [
+      "vite/client",
+    ]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": [
+    "src/**/*.ts", 
+  "src/**/*.d.ts",
+   "src/**/*.tsx",
+    "src/**/*.vue",
+     "src/types/**/*.d.ts"
+  ],
   "exclude": [
     "./dist",
     "./.quasar",
     "./node_modules",
     "./src-capacitor",
     "./src-cordova",
-    "./quasar.config.*.temporary.compiled*"
+    "./quasar.config.*.temporary.compiled*",
+
   ]
 }
