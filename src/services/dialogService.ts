@@ -7,7 +7,7 @@ export const showSuccessDialog = (message: string) => {
         icon: 'success',
         title: message,
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
       });
 };
 
@@ -33,7 +33,7 @@ export const showDeleteDialog = async (message: string) => {
       icon: 'success',
       title: message,
       showConfirmButton: false,
-      timer: 1500
+      timer: 2000
     });
     
 }

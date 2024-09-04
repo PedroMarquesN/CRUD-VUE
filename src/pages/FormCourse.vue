@@ -2,9 +2,10 @@
 import {  ref } from 'vue';
 import { ICourse } from '../types/API';
 import coursesService from '../services/course';
+import { showSuccessDialog } from '../services/dialogService';
+import { useRouter } from 'vue-router';
 
-
-
+const router = useRouter(); 
 
 const course = ref<ICourse>({
   id: 0, 
@@ -16,9 +17,12 @@ const course = ref<ICourse>({
 
 
 const submitForm = async () => {
-  console.log(course.value);
+
   try {
-    await coursesService().post(course.value);
+    await coursesService().save(course.value);
+    showSuccessDialog('Curso cadastrado com sucesso');
+    router.push({ name: 'home' });
+
   }
   catch(error){
     console.error(error);
@@ -37,7 +41,7 @@ defineOptions({
           <div class="text-h6">Formulário de Curso</div>
         </q-card-section>
   
-        <q-card-section>
+        <q-card-section padding>
           <q-form @submit="submitForm">
             <q-input
               v-model="course.title"
@@ -63,8 +67,11 @@ defineOptions({
               filled
               dense
             />
-            <q-space />
-            <q-btn type="submit" label="Submit" color="primary" />
+
+            <div class="col-12 q-gutter-sm flex justify-end items-center">
+                <q-btn type="submit" label="Salvar" color="primary" icon="save" />
+                <q-btn label="Cancelar" color="negative" @click="router.push({ name: 'home' })" />
+              </div>
           </q-form>
         </q-card-section>
       </q-card>

@@ -17,7 +17,6 @@ const getPosts = async () => {
   try {
     const data  = await list();
     courses.value = data;
-    console.log(data);
   }
   catch(error){
     console.error(error);
@@ -50,6 +49,7 @@ const columns = [
       { name: 'views', required: true, label: 'Views', align: 'left' as const, field: (row: ICourse) => row.views, sortable: true },
       { name: 'actions', field: 'actions',label: 'Actions', align: 'right' as const }
     ];
+
 
 
 

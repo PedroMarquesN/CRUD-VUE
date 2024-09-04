@@ -11,6 +11,7 @@ export interface IApiService<T> {
     remove: (id: number) => Promise<void>;
     update: (id: number, item: T) => Promise<T>;
     getById: (id: number) => Promise<T>;
+    save: (item: T) => Promise<T>;
 }
 
 
@@ -20,4 +21,5 @@ export interface IPostService {
     remove: (id: number) => Promise<void>;
     update: (id: number, item: ICourse) => Promise<ICourse>;
     getById: (id: number) => Promise<ICourse>;
+    save: (item: ICourse) => Promise<ICourse>;
 }

@@ -1,8 +1,6 @@
 import { api } from '../boot/axios';
 import { IApiService, ICourse } from '../types/API';
 
-
-
 export default function useApi(url: string): IApiService<ICourse> {
     
     const list = async (): Promise<ICourse[]> => {
@@ -44,6 +42,29 @@ export default function useApi(url: string): IApiService<ICourse> {
         }
     };
 
+    const save = async (course: ICourse): Promise<ICourse> => {
+        if (!course.id) {
+            const courses = await list();
+            const newId = courses.length ? Math.max(...courses.map(c => c.id)) + 1 : 1;
+            course.id = newId;
+            try {
+                const savedCourse = await post(course);
+                return savedCourse;
+            } catch (error) {
+                console.error('Erro ao salvar o curso:', error);
+                throw error;
+            }
+        } else {
+            try {
+                const updatedCourse = await update(course.id, course);
+                return updatedCourse;
+            } catch (error) {
+                console.error('Erro ao atualizar o curso:', error);
+                throw error;
+            }
+        }
+    };
+
     const remove = async (id: number): Promise<void> => {
         try {
             await api.delete(`${url}/${id}`);
@@ -69,5 +90,5 @@ export default function useApi(url: string): IApiService<ICourse> {
         }
     };
 
-    return { list, post, remove, update, getById };
+    return { list, post, remove, update, getById, save };
 }
