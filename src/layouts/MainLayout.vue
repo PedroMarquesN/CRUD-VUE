@@ -11,11 +11,16 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
+        <q-toolbar-title D>
           Quasar App
         </q-toolbar-title>
+          <q-toggle 
+          v-model="isDark" 
+          label="Dark Mode"
+          color="secondary"  
+          text-color="dark"
+           />
 
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -55,7 +60,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+
+import { Dark } from 'quasar';
+import { ref, watch } from 'vue';
+
+
+const isDark = ref(false); 
+
+watch(isDark, (val) => {
+  Dark.set(val);
+  if (val) {
+    document.body.classList.add('dark');
+  } else {
+    document.body.classList.remove('dark');
+  }
+});
 
 const links = [
   { label: 'Home', icon: 'home', to: '/' },
